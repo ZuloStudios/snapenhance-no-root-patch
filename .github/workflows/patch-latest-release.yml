@@ -1,4 +1,4 @@
-name: SnapEnhanceModGen Schedule
+name: SnapEnhance Patch Latest with Latest and Release
 
 on:
   workflow_dispatch:
