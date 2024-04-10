@@ -1,4 +1,4 @@
-name: SnapEnhanceModGen Action
+name: SnapEnhance Patch core.apk Release
 
 on:
   workflow_dispatch:
