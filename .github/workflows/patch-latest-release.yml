@@ -63,7 +63,7 @@ jobs:
 
       - name: Determine Snapchat Filename
         run: |
-          snapchatapkname=$(ls snapchatapk)
+          snapchatapkname=$(ls snapchatapk/*chat*)
           echo "snapchat_apk_filename=$snapchatapkname" >> $GITHUB_ENV
 
       - name: REGEX Snapchat Version
@@ -118,6 +118,12 @@ jobs:
         with:
           name: ${{ env.patched_apk_filename }}
           path: ./${{ env.patched_apk_filename }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.snapchat_apk_filename }}
+          path: ./${{ env.snapchat_apk_filename }}
 
       - name: Get previous tag
         id: previoustag
