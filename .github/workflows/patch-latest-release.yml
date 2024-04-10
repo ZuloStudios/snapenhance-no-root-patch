@@ -142,6 +142,7 @@ jobs:
           version: ${{ steps.REGEX_4th_part.outputs.replaced }}
 
       - name: Define Release Version
+        run: mv
         env:
           RELEASE_VERSION: '${{ steps.REGEX_1st-3rd_part.outputs.replaced }}${{ steps.semver.outputs.version }}'
 
