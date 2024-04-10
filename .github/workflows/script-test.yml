@@ -40,4 +40,6 @@ jobs:
         ./script.sh
 
     - name: Show Files
-      run: ls -la
+      run: |
+        ls -la
+        ls -la snapchatapk
