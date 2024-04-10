@@ -51,4 +51,4 @@ jobs:
 
     - name: Check Snapchat Filename
       run: |
-        echo ${{ snapchat_apk_filename }}
+        echo ${{ env.snapchat_apk_filename }}
