@@ -1,4 +1,4 @@
-name: SnapEnhance Patch Latest with Latest and Release
+name: Patch and Release
 
 on:
   workflow_dispatch:
