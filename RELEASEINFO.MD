@@ -1,6 +1,6 @@
 <h2>Version Information:</h2>
-  Snapchat Version:
-  SnapEnhance Version: ${{ env.snapenhance_release_tag_name }}
+Snapchat Version:
+SnapEnhance Version: ${{ env.snapenhance_release_tag_name }}
 
 <h3>Instructions:</h3>
 If you want to use SnapEnhance Snapchat on Android without root download `${{ env.patched_apk_filename }}` and `${{ env.snapenhance_apk_filename }}` and install them.
