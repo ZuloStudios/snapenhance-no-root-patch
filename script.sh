@@ -50,7 +50,7 @@ for version in "${versions[@]}"; do
         # Download the APK file and save it as snap.apk
         wget -U "$UserAgent" -O $version.apk "https://www.apkmirror.com$url3"
         if [ $? -eq 0 ]; then
-            echo "APK downloaded successfully as snap.apk"
+            echo "APK downloaded successfully as $version.apk"
             exit 0
         else
             echo "Failed to download APK" >&2
