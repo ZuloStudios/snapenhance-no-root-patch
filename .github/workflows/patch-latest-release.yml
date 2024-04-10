@@ -116,29 +116,27 @@ jobs:
         id: previoustag
         uses: 'WyriHaximus/github-action-get-previous-tag@v1.4.0'
         with:
-          fallback: 1.0.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          fallback: 'v1.0.0'
 
       - name: REGEX last version for 1st-3rd part
         id: REGEX_1st-3rd_part
         uses: 'frabert/replace-string-action@v2.5'
         with:
-          pattern: '(\d+)\.(\d+)\.(\d+)\.(\d+)'
+          pattern: 'v(\d+)\.(\d+)\.(\d+)\.(\d+)'
           string: ${{ steps.previoustag.outputs.tag }}
-          replace-with: '$1.$2.$3'
+          replace-with: 'v$1.$2.$3'
 
       - name: REGEX last version for 4th part
         id: REGEX_4th_part
         uses: 'frabert/replace-string-action@v2.5'
         with:
-          pattern: '(\d+)\.(\d+)\.(\d+)\.(\d+)'
+          pattern: 'v(\d+)\.(\d+)\.(\d+)\.(\d+)'
           string: ${{ steps.previoustag.outputs.tag }}
           replace-with: '$4'
 
       - name: Up the version
         id: semver
-        if: ${{ env.snapenhance_release_tag_name == 'v(steps.REGEX_1st-3rd_part.outputs.replaced)' }}
+        if: ${{ env.snapenhance_release_tag_name == steps.REGEX_1st-3rd_part.outputs.replaced }}
         uses: 'WyriHaximus/github-action-next-release-version@v1'
         with:
           version: ${{ steps.REGEX_4th_part.outputs.replaced }}
@@ -148,7 +146,7 @@ jobs:
         if: ${{ inputs.no-release != true }}
         uses: softprops/action-gh-release@v2.0.4
         with:
-          tag_name: ${{ steps.semver.outputs.patch }}
+          tag_name: ${{ steps.semver.outputs.version }}
           name: SnapEnhance Patched APK ${{ env.RELEASE_VERSION }}
           files: |
             ${{ env.APK_NAME }}.apk
