@@ -1,5 +1,5 @@
 <h2>Version Information:</h2>
-Snapchat Version:
+Snapchat Version: ${{ steps.REGEX_snapchat_version.outputs.replaced }}
 <br>
 SnapEnhance Version: ${{ env.snapenhance_release_tag_name }}
 <br>
