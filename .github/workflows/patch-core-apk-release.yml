@@ -54,11 +54,16 @@ jobs:
         run: |
           java -jar lspatch.jar -m "$GITHUB_WORKSPACE/core.apk" -f -l 2 -v snap.apk
 
+      - name: Rename apk
+        run: |
+          APK_NAME=patched-snapchat
+          mv ./snap-402-lspatched.apk ./${{APK_NAME}}.apk
+      
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: v2-snap-402-lspatched.apk
-          path: ./snap-402-lspatched.apk
+          name: ${{APK_NAME}}.apk
+          path: ./${{APK_NAME}}.apk
 
       - name: Check if the release already exists
         id: check_release
@@ -75,5 +80,5 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          files: snap-402-lspatched.apk
+          files: ${{APK_NAME}}.apk
           tag_name: ${{ env.RELEASE_VERSION }}-V2  # Append "-Beta" to the tag name
