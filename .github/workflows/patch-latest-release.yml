@@ -77,17 +77,17 @@ jobs:
             fi
           done
 
-          echo "release_id=$release_id" >> $GITHUB_ENV
-          echo "release_tag_name=$release_tag_name" >> $GITHUB_ENV
-          echo "asset_url=$asset_url" >> $GITHUB_ENV
+          echo "snapenhance_release_id=$release_id" >> $GITHUB_ENV
+          echo "snapenhance_release_tag_name=$release_tag_name" >> $GITHUB_ENV
+          echo "snapenhance_asset_url=$asset_url" >> $GITHUB_ENV
         shell: bash
 
       - name: Download the latest APK
         run: |
-          release_id="${{ env.release_id }}"
-          asset_url="${{ env.asset_url }}"
-          release_tag_name="${{ env.release_tag_name }}"
-          wget "$asset_url" -O "$GITHUB_WORKSPACE/snapenhance-${{ env.release_tag_name }}.apk"
+          release_id="${{ env.snapenhance_release_id }}"
+          asset_url="${{ env.snapenhance_asset_url }}"
+          release_tag_name="${{ env.snapenhance_release_tag_name }}"
+          wget "$asset_url" -O "$GITHUB_WORKSPACE/snapenhance-${{ env.snapenhance_release_tag_name }}.apk"
         shell: bash
 
       - name: Rename Snapchat apk
@@ -96,7 +96,7 @@ jobs:
 
       - name: Run the command
         run: |
-          java -jar lspatch.jar -m snapenhance-${{ env.release_tag_name }}.apk -f -l 2 -v original-snapchat.apk
+          java -jar lspatch.jar -m snapenhance-${{ env.snapenhance_release_tag_name }}.apk -f -l 2 -v original-snapchat.apk
 
       - name: Rename patched apk
         run: |
@@ -108,6 +108,36 @@ jobs:
           name: ${{ env.APK_NAME }}.apk
           path: ./${{ env.APK_NAME }}.apk
 
+      - name: Get previous tag
+        id: previoustag
+        uses: 'WyriHaximus/github-action-get-previous-tag@v1.4.0'
+        with:
+          fallback: 1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: REGEX last version for 1st-3rd part
+        id: REGEX_1st-3rd_part
+        uses: 'frabert/replace-string-action@v2.5'
+        with:
+          pattern: '(\d+)\.(\d+)\.(\d+)\.(\d+)'
+          string: ${{ steps.previoustag.outputs.tag }}
+          replace-with: '$1.$2.$3'
+
+      - name: REGEX last version for 4th part
+        id: REGEX_4th_part
+        uses: 'frabert/replace-string-action@v2.5'
+        with:
+          pattern: '(\d+)\.(\d+)\.(\d+)\.(\d+)'
+          string: ${{ steps.previoustag.outputs.tag }}
+          replace-with: '$4'
+
+      - name: Up the version
+        id: semver
+        uses: 'WyriHaximus/github-action-next-release-version@v1'
+        with:
+          version: ${{ steps.REGEX_tag.outputs.replaced }}
+
       - name: Create and Publish Release
         id: create_release_id
         uses: softprops/action-gh-release@v2.0.4
@@ -116,5 +146,5 @@ jobs:
           name: SnapEnhance Patched APK ${{ env.RELEASE_VERSION }}
           files: |
             ${{ env.APK_NAME }}.apk
-            snapenhance-${{ env.release_tag_name }}.apk
+            snapenhance-${{ env.snapenhance_release_tag_name }}.apk
             original-snapchat.apk
