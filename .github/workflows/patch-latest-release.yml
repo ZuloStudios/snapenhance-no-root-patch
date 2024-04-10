@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       no-release:
-        description: "Don't make a release when checked."
+        description: "Don't release"
         type: boolean
         default: false
 env:
