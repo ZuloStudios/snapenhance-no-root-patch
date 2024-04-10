@@ -8,7 +8,7 @@ on:
         type: boolean
         default: false
 env:
-  APK_NAME: patched-snapchat
+  patched-apk-filename: patched-snapchat
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
@@ -63,7 +63,8 @@ jobs:
 
       - name: Determine Snapchat Filename
         run: |
-          ls snapchatapk/*
+          snapchatapkname=$(ls snapchatapk)
+          echo "snapchat_apk_filename=$snapchatapkname" >> $GITHUB_ENV
 
       - name: Fetch latest release information
         id: fetch-release
@@ -100,17 +101,17 @@ jobs:
 
       - name: Run the command
         run: |
-          java -jar lspatch.jar -m snapenhance-${{ env.snapenhance_release_tag_name }}.apk -f -l 2 -v original-snapchat.apk
+          java -jar lspatch.jar -m snapenhance-${{ env.snapenhance_release_tag_name }}.apk -f -l 2 -v ${{ env.snapchat_apk_filename }}
 
       - name: Rename patched apk
         run: |
-          mv ./original-snapchat-402-lspatched.apk ./${{ env.APK_NAME }}.apk
+          mv ./original-snapchat-402-lspatched.apk ./${{ env.patched-apk-filename }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.APK_NAME }}.apk
-          path: ./${{ env.APK_NAME }}.apk
+          name: ${{ env.patched-apk-filename }}
+          path: ./${{ env.patched-apk-filename }}
 
       - name: Get previous tag
         id: previoustag
@@ -155,6 +156,6 @@ jobs:
           body_path: RELEASEINFO.MD
           fail_on_unmatched_files: true
           files: |
-            ${{ env.APK_NAME }}.apk
+            ${{ env.patched-apk-filename }}
             snapenhance-${{ env.snapenhance_release_tag_name }}.apk
-            original-snapchat.apk
+            ${{ env.snapchat_apk_filename }}
