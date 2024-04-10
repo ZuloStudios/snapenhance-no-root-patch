@@ -142,9 +142,9 @@ jobs:
           version: ${{ steps.REGEX_4th_part.outputs.replaced }}
 
       - name: Define Release Version
-        env:
-          RELEASE_VERSION: '${{ steps.REGEX_1st-3rd_part.outputs.replaced }}${{ steps.semver.outputs.version }}'
-        run: echo ${{ env.RELEASE_VERSION }}
+        run: |
+          echo "RELEASE_VERSION=${{ steps.REGEX_1st-3rd_part.outputs.replaced }}.${{ steps.semver.outputs.version }}" >> $GITHUB_ENV
+          echo ${{ env.RELEASE_VERSION }}
 
       - name: Create and Publish Release
         id: create-publish-release
