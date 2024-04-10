@@ -3,6 +3,9 @@ name: SnapEnhance Patch core.apk and Release
 on:
   workflow_dispatch:
 
+env:
+  APK_NAME: patched-snapchat
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -56,7 +59,6 @@ jobs:
 
       - name: Rename apk
         run: |
-          APK_NAME=patched-snapchat
           mv ./snap-402-lspatched.apk ./${{ env.APK_NAME }}.apk
       
       - name: Upload artifact
@@ -68,7 +70,7 @@ jobs:
       - name: Check if the release already exists
         id: check_release
         run: |
-          RELEASE_VERSION=v0.0  # Change this to the initial release version
+          RELEASE_VERSION=v2.0  # Change this to the initial release version
           if curl -s -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/repos/${{ github.repository }}/releases/tags/$RELEASE_VERSION; then
             echo "Release $RELEASE_VERSION already exists."
             # Increment the release version
