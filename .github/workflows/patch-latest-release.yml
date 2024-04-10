@@ -5,11 +5,13 @@ on:
 
 env:
   APK_NAME: patched-snapchat
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
     steps:
       - name: Set up Java
         uses: actions/setup-java@v2
@@ -106,14 +108,13 @@ jobs:
           name: ${{ env.APK_NAME }}.apk
           path: ./${{ env.APK_NAME }}.apk
 
-      
       - name: Create and Publish Release
-        id: create_release
-        uses: softprops/action-gh-release@v1
+        id: create_release_id
+        uses: softprops/action-gh-release@v2.0.4
         with:
+          tag_name: ${{ steps.semver.outputs.patch }}
+          name: SnapEnhance Patched APK ${{ env.RELEASE_VERSION }}
           files: |
             ${{ env.APK_NAME }}.apk
             snapenhance-${{ env.release_tag_name }}.apk
             original-snapchat.apk
-          tag_name: ${{ env.RELEASE_VERSION }}
-          name: SnapEnhance Patched APK ${{ env.RELEASE_VERSION }}
