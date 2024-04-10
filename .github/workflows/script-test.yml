@@ -35,8 +35,12 @@ jobs:
       working-directory: .
 
     - name: Run APK Download Script
+      id: snapchat-download
       run: |
         ./script.sh
 
     - name: Show Files
       run: ls -la
+    - name: Show Output of Download Script
+      run: |
+        echo ${{ steps.snapchat-download.outputs }}
