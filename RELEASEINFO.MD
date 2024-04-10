@@ -1,5 +1,6 @@
 <h2>Version Information:</h2>
 Snapchat Version:
+<br>
 SnapEnhance Version: ${{ env.snapenhance_release_tag_name }}
 
 <h3>Instructions:</h3>
