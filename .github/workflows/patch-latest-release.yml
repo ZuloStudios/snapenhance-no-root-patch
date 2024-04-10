@@ -8,7 +8,7 @@ on:
         type: boolean
         default: false
 env:
-  patched-apk-filename: patched-snapchat.apk
+  patched_apk_filename: patched-snapchat.apk
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
@@ -89,27 +89,27 @@ jobs:
           echo "snapenhance_release_id=$release_id" >> $GITHUB_ENV
           echo "snapenhance_release_tag_name=$release_tag_name" >> $GITHUB_ENV
           echo "snapenhance_asset_url=$asset_url" >> $GITHUB_ENV
-          echo "snapenhance_module_filename=snapenhance-$release_tag_name.apk" >> $GITHUB_ENV
+          echo "snapenhance_apk_filename=snapenhance-$release_tag_name.apk" >> $GITHUB_ENV
         shell: bash
 
       - name: Download the latest SnapEnhance APK
         run: |
-          wget "${{ env.snapenhance_asset_url }}" -O "$GITHUB_WORKSPACE/snapenhance-${{ env.snapenhance_release_tag_name }}.apk"
+          wget "${{ env.snapenhance_asset_url }}" -O "$GITHUB_WORKSPACE/${{ env.snapenhance_apk_filename }}"
         shell: bash
 
       - name: Run the command
         run: |
-          java -jar lspatch.jar -m snapenhance-${{ env.snapenhance_release_tag_name }}.apk -f -l 2 -v ${{ env.snapchat_apk_filename }}
+          java -jar lspatch.jar -m ${{ env.snapenhance_apk_filename }} -f -l 2 -v ${{ env.snapchat_apk_filename }}
 
       - name: Rename patched apk
         run: |
-          mv ./original-snapchat-402-lspatched.apk ./${{ env.patched-apk-filename }}
+          mv ./original-snapchat-402-lspatched.apk ./${{ env.patched_apk_filename }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.patched-apk-filename }}
-          path: ./${{ env.patched-apk-filename }}
+          name: ${{ env.patched_apk_filename }}
+          path: ./${{ env.patched_apk_filename }}
 
       - name: Get previous tag
         id: previoustag
@@ -154,6 +154,6 @@ jobs:
           body_path: RELEASEINFO.MD
           fail_on_unmatched_files: true
           files: |
-            ${{ env.patched-apk-filename }}
-            snapenhance-${{ env.snapenhance_release_tag_name }}.apk
+            ${{ env.patched_apk_filename }}
+            ${{ env.snapenhance_apk_filename }}
             ${{ env.snapchat_apk_filename }}
