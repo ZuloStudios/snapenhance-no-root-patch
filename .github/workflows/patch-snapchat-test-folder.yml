@@ -59,7 +59,7 @@ jobs:
 
       - name: Determine Snapchat Filename
         run: |
-          snapchatapkname=$(ls snapchat-test/*)
+          snapchatapkname=$(ls snapchat-test/*chat*)
           echo "snapchat_apk_filename=$snapchatapkname" >> $GITHUB_ENV
 
       - name: REGEX Snapchat Version
