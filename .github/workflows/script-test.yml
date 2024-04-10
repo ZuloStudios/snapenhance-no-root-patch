@@ -43,3 +43,12 @@ jobs:
       run: |
         ls -la
         ls -la snapchatapk
+
+    - name: Determine Snapchat Filename
+      run: |
+        snapchatapkname=$(ls snapchatapk/*)
+        echo "snapchat_apk_filename=$snapchatapkname" >> $GITHUB_ENV
+
+    - name: Check Snapchat Filename
+      run: |
+        echo ${{ snapchat_apk_filename }}
