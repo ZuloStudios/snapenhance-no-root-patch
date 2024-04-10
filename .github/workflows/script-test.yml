@@ -41,6 +41,3 @@ jobs:
 
     - name: Show Files
       run: ls -la
-    - name: Show Output of Download Script
-      run: |
-        echo ${{ steps.snapchat-download.outputs }}
