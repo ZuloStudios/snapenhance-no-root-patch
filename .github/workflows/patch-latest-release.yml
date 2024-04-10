@@ -66,6 +66,14 @@ jobs:
           snapchatapkname=$(ls snapchatapk)
           echo "snapchat_apk_filename=$snapchatapkname" >> $GITHUB_ENV
 
+      - name: REGEX Snapchat Version
+        id: REGEX_snapchat_version
+        uses: 'frabert/replace-string-action@v2.5'
+        with:
+          pattern: '(\d+)-(\d+)-(\d+)-(\d+)'
+          string: ${{ env.snapchat_apk_filename }}
+          replace-with: 'v$1.$2.$3.$4'
+
       - name: Fetch latest release information
         id: fetch-release
         run: |
