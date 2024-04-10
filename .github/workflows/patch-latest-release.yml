@@ -8,7 +8,7 @@ on:
         type: boolean
         default: false
 env:
-  patched-apk-filename: patched-snapchat
+  patched-apk-filename: patched-snapchat.apk
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
@@ -51,11 +51,11 @@ jobs:
          unzip pup.zip
          chmod +x pup
          sudo mv pup /usr/local/bin/
-        working-directory: . 
+        working-directory: .
 
       - name: Grant execute permissions to script
         run: chmod +x script.sh
-        working-directory: .  
+        working-directory: .
 
       - name: Run APK Download Script
         run: |
@@ -89,14 +89,12 @@ jobs:
           echo "snapenhance_release_id=$release_id" >> $GITHUB_ENV
           echo "snapenhance_release_tag_name=$release_tag_name" >> $GITHUB_ENV
           echo "snapenhance_asset_url=$asset_url" >> $GITHUB_ENV
+          echo "snapenhance_module_filename=snapenhance-$release_tag_name.apk" >> $GITHUB_ENV
         shell: bash
 
-      - name: Download the latest APK
+      - name: Download the latest SnapEnhance APK
         run: |
-          release_id="${{ env.snapenhance_release_id }}"
-          asset_url="${{ env.snapenhance_asset_url }}"
-          release_tag_name="${{ env.snapenhance_release_tag_name }}"
-          wget "$asset_url" -O "$GITHUB_WORKSPACE/snapenhance-${{ env.snapenhance_release_tag_name }}.apk"
+          wget "${{ env.snapenhance_asset_url }}" -O "$GITHUB_WORKSPACE/snapenhance-${{ env.snapenhance_release_tag_name }}.apk"
         shell: bash
 
       - name: Run the command
