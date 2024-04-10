@@ -116,7 +116,7 @@ jobs:
         id: previoustag
         uses: 'WyriHaximus/github-action-get-previous-tag@v1.4.0'
         with:
-          fallback: 'v2.0.0'
+          fallback: 'v2.0.0.0'
 
       - name: REGEX last version for 1st-3rd part
         id: REGEX_1st-3rd_part
@@ -141,13 +141,19 @@ jobs:
         with:
           version: ${{ steps.REGEX_4th_part.outputs.replaced }}
 
+      - name: Define Release Version
+        env:
+          RELEASE_VERSION: '${{ steps.REGEX_1st-3rd_part.outputs.replaced }}${{ steps.semver.outputs.version }}'
+
       - name: Create and Publish Release
         id: create-publish-release
         if: ${{ inputs.no-release != true }}
         uses: softprops/action-gh-release@v2.0.4
         with:
-          tag_name: ${{ steps.semver.outputs.version }}
+          tag_name: ${{ env.RELEASE_VERSION }}
           name: SnapEnhance Patched APK ${{ env.RELEASE_VERSION }}
+          body_path: RELEASEINFO.MD
+          fail_on_unmatched_files: true
           files: |
             ${{ env.APK_NAME }}.apk
             snapenhance-${{ env.snapenhance_release_tag_name }}.apk
