@@ -75,5 +75,5 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          files: v2-snap-402-lspatched.apk
+          files: snap-402-lspatched.apk
           tag_name: ${{ env.RELEASE_VERSION }}-V2  # Append "-Beta" to the tag name
