@@ -88,15 +88,24 @@ jobs:
           wget "$asset_url" -O "$GITHUB_WORKSPACE/latest-snapenhance-${release_tag_name}.apk"
         shell: bash
 
+      - name: Rename Snapchat apk
+        run: |
+          mv ./snap.apk ./snapchat.apk
+
       - name: Run the command
         run: |
-          java -jar lspatch.jar -m latest-snapenhance-${release_tag_name}.apk -f -l 2 -v snap.apk
+          java -jar lspatch.jar -m latest-snapenhance-${release_tag_name}.apk -f -l 2 -v snapchat.apk
+
+      - name: Rename patched apk
+        run: |
+          mv ./snap-402-lspatched.apk ./${{ env.APK_NAME }}.apk
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
-          name: snap-402-lspatched.apk
-          path: ./snap-402-lspatched.apk
+          name: ${{ env.APK_NAME }}.apk
+          path: ./${{ env.APK_NAME }}.apk
+
       - name: Check if the release already exists
         id: check_release
         run: |
