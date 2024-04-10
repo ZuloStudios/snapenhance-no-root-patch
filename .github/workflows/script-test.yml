@@ -1,0 +1,12 @@
+name: Test the Snapchat Download Script
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Run APK Download Script
+      run: |
+        ./script.sh
