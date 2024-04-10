@@ -3,6 +3,9 @@ name: SnapEnhance Patch Latest with Latest and Release
 on:
   workflow_dispatch:
 
+env:
+  APK_NAME: patched-snapchat
+
 jobs:
   build:
     runs-on: ubuntu-latest
