@@ -2,7 +2,11 @@ name: Patch and Release
 
 on:
   workflow_dispatch:
-
+    inputs:
+      no-release:
+        description: "Don't make a release when checked."
+        type: boolean
+        default: false
 env:
   APK_NAME: patched-snapchat
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -134,12 +138,14 @@ jobs:
 
       - name: Up the version
         id: semver
+        if: ${{ env.snapenhance_release_tag_name == 'v'steps.REGEX_1st-3rd_part.outputs.replaced }}
         uses: 'WyriHaximus/github-action-next-release-version@v1'
         with:
-          version: ${{ steps.REGEX_tag.outputs.replaced }}
+          version: ${{ steps.REGEX_4th_part.outputs.replaced }}
 
       - name: Create and Publish Release
-        id: create_release_id
+        id: create-publish-release
+        if: ${{ inputs.no-release != true }}
         uses: softprops/action-gh-release@v2.0.4
         with:
           tag_name: ${{ steps.semver.outputs.patch }}
