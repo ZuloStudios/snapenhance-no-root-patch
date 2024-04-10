@@ -60,7 +60,11 @@ jobs:
       - name: Run APK Download Script
         run: |
          ./script.sh  
-      
+
+      - name: Determine Snapchat Filename
+        run: |
+          ls snapchatapk/*
+
       - name: Fetch latest release information
         id: fetch-release
         run: |
@@ -93,10 +97,6 @@ jobs:
           release_tag_name="${{ env.snapenhance_release_tag_name }}"
           wget "$asset_url" -O "$GITHUB_WORKSPACE/snapenhance-${{ env.snapenhance_release_tag_name }}.apk"
         shell: bash
-
-      - name: Rename Snapchat apk
-        run: |
-          mv ./snap.apk ./original-snapchat.apk
 
       - name: Run the command
         run: |
