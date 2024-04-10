@@ -1,12 +1,7 @@
 name: SnapEnhanceModGen Schedule
 
 on:
-  schedule:
-    - cron: '45 11,23 * * *'
-  push:
-    paths:
-      - 'push-here.md'
-      - '**/core.apk'
+  workflow_dispatch:
 
 jobs:
   build:
