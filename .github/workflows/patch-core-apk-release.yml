@@ -1,4 +1,4 @@
-name: SnapEnhance Patch core.apk Release
+name: SnapEnhance Patch core.apk and Release
 
 on:
   workflow_dispatch:
