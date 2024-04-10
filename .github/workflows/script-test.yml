@@ -13,6 +13,23 @@ jobs:
       with:
         fetch-depth: 0 # required for github-action-get-previous-tag
 
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y jq curl
+      shell: bash
+
+    - name: Install unzip
+      run: sudo apt-get install unzip -y
+
+    - name: Install pup
+      run: |
+        wget https://github.com/ericchiang/pup/releases/download/v0.4.0/pup_v0.4.0_linux_amd64.zip -O pup.zip
+        unzip pup.zip
+        chmod +x pup
+        sudo mv pup /usr/local/bin/
+      working-directory: .
+
     - name: Grant execute permissions to script
       run: chmod +x script.sh
       working-directory: .
