@@ -123,7 +123,7 @@ jobs:
         id: previoustag
         uses: 'WyriHaximus/github-action-get-previous-tag@v1.4.0'
         with:
-          fallback: 'v2.0.0.0'
+          fallback: 'v1.0.0.0'
 
       - name: REGEX last version for 1st-3rd part
         id: REGEX_1st-3rd_part
@@ -141,16 +141,22 @@ jobs:
           string: ${{ steps.previoustag.outputs.tag }}
           replace-with: '$4'
 
-      - name: Up the version
+      - name: Up the version if same SnapEnhance version
         id: semver
         if: ${{ env.snapenhance_release_tag_name == steps.REGEX_1st-3rd_part.outputs.replaced }}
         uses: 'WyriHaximus/github-action-next-release-version@v1'
         with:
           version: ${{ steps.REGEX_4th_part.outputs.replaced }}
 
-      - name: Define Release Version
+      - name: Define Release Version if same SnapEnhance version
+        if: ${{ env.snapenhance_release_tag_name == steps.REGEX_1st-3rd_part.outputs.replaced }}
         run: |
           echo "RELEASE_VERSION=${{ steps.REGEX_1st-3rd_part.outputs.replaced }}.${{ steps.semver.outputs.version }}" >> $GITHUB_ENV
+
+      - name: Define Release Version if different SnapEnhance version
+        if: ${{ env.snapenhance_release_tag_name == steps.REGEX_1st-3rd_part.outputs.replaced }}
+        run: |
+          echo "RELEASE_VERSION=${{ env.snapenhance_release_tag_name }}.0" >> $GITHUB_ENV
 
       - name: Create and Publish Release
         id: create-publish-release
