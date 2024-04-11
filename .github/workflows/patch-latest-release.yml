@@ -1,4 +1,4 @@
-name: Patch and Release
+name: Patch and Release APK
 
 on:
   workflow_dispatch:
@@ -70,9 +70,17 @@ jobs:
         id: REGEX_snapchat_version
         uses: 'frabert/replace-string-action@v2.5'
         with:
-          pattern: '(\d+)-(\d+)-(\d+)-(\d+)'
+          pattern: 'snapchatapk/snap.*?(\d+)-(\d+)-(\d+)-(\d+)\.apk'
           string: ${{ env.snapchat_apk_filename }}
           replace-with: 'v$1.$2.$3.$4'
+
+      - name: REGEX Snapchat Name
+        id: REGEX_snapchat_name
+        uses: 'frabert/replace-string-action@v2.5'
+        with:
+          pattern: 'snapchatapk/(snap.*?)\.apk'
+          string: ${{ env.snapchat_apk_filename }}
+          replace-with: '$1'
 
       - name: Fetch latest release information
         id: fetch-release
@@ -111,7 +119,7 @@ jobs:
 
       - name: Rename patched apk
         run: |
-          mv ./original-snapchat-402-lspatched.apk ./${{ env.patched_apk_filename }}
+          mv ./${{ steps.REGEX_snapchat_name.outputs.replaced }}-402-lspatched.apk ./${{ env.patched_apk_filename }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -122,7 +130,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.snapchat_apk_filename }}
+          name: ${{ steps.REGEX_snapchat_name.outputs.replaced }}.apk
           path: ./${{ env.snapchat_apk_filename }}
 
       - name: Get previous tag
@@ -160,7 +168,7 @@ jobs:
           echo "RELEASE_VERSION=${{ steps.REGEX_1st-3rd_part.outputs.replaced }}.${{ steps.semver.outputs.version }}" >> $GITHUB_ENV
 
       - name: Define Release Version if different SnapEnhance version
-        if: ${{ env.snapenhance_release_tag_name == steps.REGEX_1st-3rd_part.outputs.replaced }}
+        if: ${{ env.snapenhance_release_tag_name != steps.REGEX_1st-3rd_part.outputs.replaced }}
         run: |
           echo "RELEASE_VERSION=${{ env.snapenhance_release_tag_name }}.0" >> $GITHUB_ENV
 
@@ -171,9 +179,16 @@ jobs:
         with:
           tag_name: ${{ env.RELEASE_VERSION }}
           name: SnapEnhance Patched APK ${{ env.RELEASE_VERSION }}
-          body_path: RELEASEINFO.MD
           fail_on_unmatched_files: true
           files: |
             ${{ env.patched_apk_filename }}
             ${{ env.snapenhance_apk_filename }}
             ${{ env.snapchat_apk_filename }}
+          body: |
+            <h2>Version Information:</h2>
+            Snapchat Version: ${{ steps.REGEX_snapchat_version.outputs.replaced }}
+            <br>
+            SnapEnhance Version: ${{ env.snapenhance_release_tag_name }}
+            <br>
+            <h3>Instructions:</h3>
+            If you want to use SnapEnhance Snapchat on Android without root, then you need to download `${{ env.patched_apk_filename }}` and `${{ env.snapenhance_apk_filename }}` and install them.
