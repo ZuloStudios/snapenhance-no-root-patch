@@ -1,7 +1,7 @@
 <div align="center">
   <img src="https://github.com/hamzaharoon1314/SnapEnhanceModGen/blob/9aba3263a34893c91a08d86183baf708bbbbea9c/REDME_IMG/LOGO.png" height="250" />
 
-### [Instuctions](#instructions) Below (Including [Obtainium Instructions](#instructions-for-obtainium-users))
+### [Instuctions](#instructions) Below (Including [Obtainium Instructions](#obtainium-instructions))
 
 # SnapEnhance LSPatch Generator
 SnapEnhance is an Xposed mod that enhances your Snapchat experience.<br/><br/> This is Un-Offical repo to build the LSPatch Version.
@@ -19,8 +19,8 @@ The instructions are on every release, download the `patched-snapchat.apk` file 
 
 <br>
 
-# Instructions for Obtainium Users
-COMING SOON (not TM as I will post Obtainium comfig for this once I get it working, I personally use Obtainium)
+# Obtainium Instructions
+COMING SOON (not ™ as I will post Obtainium comfig for this once I get it working, I personally use Obtainium)
 
 <br>
 
