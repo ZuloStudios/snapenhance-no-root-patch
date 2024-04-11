@@ -1,7 +1,7 @@
 <div align="center">
   <img src="https://github.com/hamzaharoon1314/SnapEnhanceModGen/blob/9aba3263a34893c91a08d86183baf708bbbbea9c/REDME_IMG/LOGO.png" height="250" />
 
-### [Instuctions](https://github.com/NicholasFlamy/snapenhance-no-root-patch/edit/master/README.md#instructions) Below (Including [Obtainium Instructions](https://github.com/NicholasFlamy/snapenhance-no-root-patch?tab=readme-ov-file#instructions-for-obtainium-users))
+### [Instuctions](https://github.com/NicholasFlamy/snapenhance-no-root-patch#instructions) Below (Including [Obtainium Instructions](https://github.com/NicholasFlamy/snapenhance-no-root-patch#instructions-for-obtainium-users))
 
 # SnapEnhance LSPatch Generator
 SnapEnhance is an Xposed mod that enhances your Snapchat experience.<br/><br/> This is Un-Offical repo to build the LSPatch Version.
