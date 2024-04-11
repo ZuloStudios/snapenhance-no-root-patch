@@ -96,7 +96,7 @@ jobs:
           asset_url=""
           for asset in $(echo $release_info | jq -c '.assets[]'); do
             asset_name=$(echo $asset | jq -r '.name')
-            if [[ $asset_name == *"armv8"* && $asset_name == *".apk" ]]; then
+            if [[ $asset_name == *"all"* && $asset_name == *".apk" ]]; then
               asset_url=$(echo $asset | jq -r '.browser_download_url')
               break
             fi
