@@ -1,7 +1,7 @@
 <div align="center">
   <img src="https://github.com/hamzaharoon1314/SnapEnhanceModGen/blob/9aba3263a34893c91a08d86183baf708bbbbea9c/REDME_IMG/LOGO.png" height="250" />
   
-![Action](https://github.com/ABCPascal/SnapEnhanceModGen/actions/workflows/main.yml/badge.svg?branch=main)
+![Action](https://github.com/NicholasFlamy/snapenhance-no-root-patch/actions/workflows/main.yml/badge.svg?branch=master)
   
 # SnapEnhance LSPatch Generator
 SnapEnhance is an Xposed mod that enhances your Snapchat experience.<br/><br/> This is Un-Offical repo to build the LSPatch Version.
