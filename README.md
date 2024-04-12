@@ -24,7 +24,7 @@ Credit to [@hamzaharoon1314](https://github.com/hamzaharoon1314) and [@ABCPascal
 
 # Instructions
 The instructions are on every [release](https://github.com/NicholasFlamy/snapenhance-no-root-patch/releases/latest).
-   - (If you don't know what architecture -- arm64-v8a or armeabi-v7a -- to download, either download the **universal** apk (takes more storage space) or check out [this app](https://play.google.com/store/apps/details?id=ru.andr7e.deviceinfohw), go to the SoC tab and look for ABI as it will show you which architecture your phone uses. If you have arm64-v9a that's an improvement to arm64-v8a so use arm64-v8a.)
+- If you don't know your device's architecture [click here](https://github.com/NicholasFlamy/snapenhance-no-root-patch/blob/master/LEARNFINDARCH.md).
 
 <br>
 
