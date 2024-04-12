@@ -3,7 +3,7 @@
 
 ### [Instuctions](#instructions) Below (Including [Obtainium Instructions](#obtainium-instructions))
 
-### The Workflow runs at 23:55 UTC (6:55 PM EST or 7:55 PM EDT, Eastern Daylight Savings Time) only on Sunday and Thursday.
+The Workflow runs at 23:55 UTC (6:55 PM EST or 7:55 PM EDT, Eastern Daylight Savings Time) only on Sunday and Thursday.
 
 # SnapEnhance LSPatch Generator
 SnapEnhance is an Xposed mod that enhances your Snapchat experience.<br/><br/> This is Un-Offical repo to build the LSPatch Version.
