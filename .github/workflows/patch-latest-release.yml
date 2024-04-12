@@ -3,10 +3,15 @@ name: Patch and Release APK
 on:
   schedule:
     - cron: '55 23 * * 0,4'
+    - cron: '30 16 * * 5'
   workflow_dispatch:
     inputs:
       no-release:
         description: "Don't release"
+        type: boolean
+        default: false
+      draft:
+        description: "Draft release"
         type: boolean
         default: false
 env:
@@ -241,3 +246,4 @@ jobs:
             If you want to use SnapEnhance Snapchat on Android without root, then you need to download amd install the patched Snapchat APK and the SnapEnhance APK for your architecture, if you don't know your architecture, [learn how to find your architecture](https://github.com/NicholasFlamy/snapenhance-no-root-patch/blob/master/LEARNFINDARCH.md) or download `${{ env.patched_universal_apk_filename }}` and `${{ env.snapenhance_universal_apk_filename }}`.
             
             Automate your updates with [Obtainium](https://github.com/NicholasFlamy/snapenhance-no-root-patch#obtainium-instructions).
+          draft: ${{ inputs.draft }}
