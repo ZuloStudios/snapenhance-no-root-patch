@@ -13,10 +13,8 @@ on:
         description: "Draft release"
         type: boolean
         default: false
+
 env:
-  patched_universal_apk_filename: patched-snapchat-universal.apk
-  patched_arm64-v8a_apk_filename: patched-snapchat-arm64-v8a.apk
-  patched_armeabi-v7a_apk_filename: patched-snapchat-armeabi-v7a.apk
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
@@ -90,7 +88,7 @@ jobs:
           string: ${{ env.snapchat_apk_filename }}
           replace-with: '$1'
 
-      - name: Fetch latest release information
+      - name: Fetch latest SnapEnhance info and Name the APK files
         id: fetch-release
         run: |
           repo_owner="rhunk"
@@ -133,6 +131,9 @@ jobs:
           echo "snapenhance_universal_apk_filename=snapenhance-universal-$release_tag_name.apk" >> $GITHUB_ENV
           echo "snapenhance_arm64-v8a_apk_filename=snapenhance-arm64-v8a-$release_tag_name.apk" >> $GITHUB_ENV
           echo "snapenhance_armeabi-v7a_apk_filename=snapenhance-armeabi-v7a-$release_tag_name.apk" >> $GITHUB_ENV
+          echo "patched_universal_apk_filename=patched-snapchat-universal-${{ steps.REGEX_snapchat_version.outputs.replaced }}.apk" >> $GITHUB_ENV
+          echo "patched_arm64-v8a_apk_filename=patched-snapchat-arm64-v8a-${{ steps.REGEX_snapchat_version.outputs.replaced }}.apk" >> $GITHUB_ENV
+          echo "patched_armeabi-v7a_apk_filename=patched-snapchat-armeabi-v7a-${{ steps.REGEX_snapchat_version.outputs.replaced }}.apk" >> $GITHUB_ENV
         shell: bash
 
       - name: Download Universal SnapEnhance APK
