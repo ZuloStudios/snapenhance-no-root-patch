@@ -10,19 +10,21 @@ SnapEnhance is an Xposed mod that enhances your Snapchat experience.
 
 This ***unofficial*** repository uses a GitHub Actions workflow for generating a Snapchat APK by using the [SnapEnhance Module](https://github.com/rhunk/SnapEnhance) and creating a public release.
 
-Credit to @hamzaharoon1314 and @ABCPascal for much of the work.
+Credit to [@hamzaharoon1314](https://github.com/hamzaharoon1314) and [@ABCPascal](https://github.com/ABCPascal) for much of the work.
 
-### @NicholasFlamy Work:
+### [@NicholasFlamy](https://github.com/NicholasFlamy)'s Work:
 - Fully automated this repository
 - Display Snapchat & SnapEnhance version
 - New release created for every workflow run
 - Release version follows SnapEnhance
+- Multiple Architectures in Releases
+- More...
 
 <br>
 
 # Instructions
-The instructions are on every release, download the `patched-snapchat.apk` file and the correct version of SnapEnhance (a link will be in the release notes.)
-   - (If you don't know what architecture -- armv8 or armv7 -- to download, check out [this app](https://play.google.com/store/apps/details?id=ru.andr7e.deviceinfohw), go to the SoC tab and look for ABI as it will show you which architecture your phone uses. If you have armv9 that's an improvement to armv8 so use armv8.)
+The instructions are on every [release](https://github.com/NicholasFlamy/snapenhance-no-root-patch/releases/latest).
+   - (If you don't know what architecture -- arm64-v8a or armeabi-v7a -- to download, either download the **universal** apk (takes more storage space) or check out [this app](https://play.google.com/store/apps/details?id=ru.andr7e.deviceinfohw), go to the SoC tab and look for ABI as it will show you which architecture your phone uses. If you have arm64-v9a that's an improvement to arm64-v8a so use arm64-v8a.)
 
 <br>
 
