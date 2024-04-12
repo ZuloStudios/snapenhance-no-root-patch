@@ -102,11 +102,11 @@ jobs:
               break
             fi
             if [[ $asset_name == *"armv8"* && $asset_name == *".apk" ]]; then
-              arm64-v8a_asset_url=$(echo $asset | jq -r '.browser_download_url')
+              arm64_v8a_asset_url=$(echo $asset | jq -r '.browser_download_url')
               break
             fi
             if [[ $asset_name == *"armv7"* && $asset_name == *".apk" ]]; then
-              armeabi-v7a_asset_url=$(echo $asset | jq -r '.browser_download_url')
+              armeabi_v7a_asset_url=$(echo $asset | jq -r '.browser_download_url')
               break
             fi
           done
@@ -114,8 +114,8 @@ jobs:
           echo "snapenhance_release_id=$release_id" >> $GITHUB_ENV
           echo "snapenhance_release_tag_name=$release_tag_name" >> $GITHUB_ENV
           echo "snapenhance_universal_asset_url=$universal_asset_url" >> $GITHUB_ENV
-          echo "snapenhance_arm64-v8a_asset_url=$arm64-v8a_asset_url" >> $GITHUB_ENV
-          echo "snapenhance_armeabi-v7a_asset_url=$armeabi-v7a_asset_url" >> $GITHUB_ENV
+          echo "snapenhance_arm64-v8a_asset_url=$arm64_v8a_asset_url" >> $GITHUB_ENV
+          echo "snapenhance_armeabi-v7a_asset_url=$armeabi_v7a_asset_url" >> $GITHUB_ENV
           echo "snapenhance_universal_apk_filename=snapenhance-universal-$release_tag_name.apk" >> $GITHUB_ENV
           echo "snapenhance_arm64-v8a_apk_filename=snapenhance-arm64-v8a-$release_tag_name.apk" >> $GITHUB_ENV
           echo "snapenhance_armeabi-v7a_apk_filename=snapenhance-armeabi-v7a-$release_tag_name.apk" >> $GITHUB_ENV
