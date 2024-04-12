@@ -3,7 +3,7 @@ name: Patch and Release APK
 on:
   schedule:
     - cron: '55 23 * * 0,4'
-    - cron: '30 16 * * 5'
+    - cron: '34 16 * * 5'
   workflow_dispatch:
     inputs:
       no-release:
