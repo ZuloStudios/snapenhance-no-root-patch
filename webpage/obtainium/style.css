@@ -1,15 +1,39 @@
 body {
-  font-family: sans-serif;
+  font-family: Roboto, sans-serif;  /* Using Roboto font from Google Fonts */
   margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1000px;  /* Set a maximum width for responsive design */
+  width: 85%;
+  margin: 20px auto;  /* Center the content horizontally */
   padding: 20px;
+  background-color: #fff;  /* White background for the content area */
+  border-radius: 4px;   /* Rounded corners for Material Design style */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  /* Subtle shadow for depth */
 }
 
 h1 {
   text-align: center;
+  font-weight: 500;  /* Set font weight for a bolder heading */
 }
 
 p {
   text-align: center;
+}
+
+.instructions {
+  margin-top: 20px;
+  padding: 16px;  /* Adjusted padding for better spacing */
+  border: none;  /* Removed border for a cleaner look */
+  border-radius: 4px;  /* Rounded corners for sections */
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);  /* Subtle shadow for sections */
+}
+
+.instructions li {
+  margin-bottom: 10px;
+  margin-left: 20px;  /* Indentation for list items */
 }
 
 .links {
@@ -23,7 +47,7 @@ p {
   margin: 10px;
   padding: 10px 20px;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: 4px;  /* Rounded corners for buttons */
   color: black;
 }
 
@@ -39,13 +63,13 @@ p {
 }
 
 .obtainium-link a {
-  display: inline-flex;  /* Changed display to inline-flex */
-  align-items: center;  /* Added align-items for vertical alignment */
+  display: inline-flex;
+  align-items: center;
   text-decoration: none;
   margin-right: 10px;
   color: black;
 }
 
 .obtainium-link img {
-  width: 50px; /* Adjust width as needed based on logo size */
+  width: 50px; /* Adjust width as needed */
 }
