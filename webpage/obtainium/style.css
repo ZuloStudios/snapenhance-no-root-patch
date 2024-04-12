@@ -1,0 +1,51 @@
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+}
+
+p {
+  text-align: center;
+}
+
+.links {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.links a {
+  text-decoration: none;
+  margin: 10px;
+  padding: 10px 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  color: black;
+}
+
+.links a:hover {
+  background-color: #eee;
+}
+
+.obtainium-link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.obtainium-link a {
+  display: inline-flex;  /* Changed display to inline-flex */
+  align-items: center;  /* Added align-items for vertical alignment */
+  text-decoration: none;
+  margin-right: 10px;
+  color: black;
+}
+
+.obtainium-link img {
+  width: 50px; /* Adjust width as needed based on logo size */
+}
