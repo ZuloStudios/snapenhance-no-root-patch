@@ -101,10 +101,18 @@ jobs:
               universal_asset_url=$(echo $asset | jq -r '.browser_download_url')
               break
             fi
+          done
+          
+          for asset in $(echo $release_info | jq -c '.assets[]'); do
+            asset_name=$(echo $asset | jq -r '.name')
             if [[ $asset_name == *"armv8"* && $asset_name == *".apk" ]]; then
               arm64_v8a_asset_url=$(echo $asset | jq -r '.browser_download_url')
               break
             fi
+          done
+          
+          for asset in $(echo $release_info | jq -c '.assets[]'); do
+            asset_name=$(echo $asset | jq -r '.name')
             if [[ $asset_name == *"armv7"* && $asset_name == *".apk" ]]; then
               armeabi_v7a_asset_url=$(echo $asset | jq -r '.browser_download_url')
               break
