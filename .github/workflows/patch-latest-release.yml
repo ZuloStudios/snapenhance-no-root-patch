@@ -123,17 +123,17 @@ jobs:
 
       - name: Download Universal SnapEnhance APK
         run: |
-          wget "${{ env.snapenhance_asset_url }}" -O "$GITHUB_WORKSPACE/${{ env.snapenhance_universal_apk_filename }}"
+          wget "${{ env.snapenhance_universal_asset_url }}" -O "$GITHUB_WORKSPACE/${{ env.snapenhance_universal_apk_filename }}"
         shell: bash
 
       - name: Download arm64-v8a SnapEnhance APK
         run: |
-          wget "${{ env.snapenhance_asset_url }}" -O "$GITHUB_WORKSPACE/${{ env.snapenhance_arm64-v8a_apk_filename }}"
+          wget "${{ env.snapenhance_arm64-v8a_asset_url }}" -O "$GITHUB_WORKSPACE/${{ env.snapenhance_arm64-v8a_apk_filename }}"
         shell: bash
 
       - name: Download armeabi-v7a SnapEnhance APK
         run: |
-          wget "${{ env.snapenhance_asset_url }}" -O "$GITHUB_WORKSPACE/${{ env.snapenhance_armeabi-v7a_apk_filename }}"
+          wget "${{ env.snapenhance_armeabi-v7a_asset_url }}" -O "$GITHUB_WORKSPACE/${{ env.snapenhance_armeabi-v7a_apk_filename }}"
         shell: bash
 
       - name: Patch Snapchat with Universal SnapEnhance APK
