@@ -11,7 +11,7 @@
 3\. Go to the SoC tab
 <br>
 4\. Look for ABI (it should show arm64-v8a or armeabi-v7a)
-- If it shows arm64-v9a that's an improvement to arm64-v8a so use arm64-v8a.
+- Note: If you see arm64-v9a use arm64-v8a.
 
 <br><br>
 
