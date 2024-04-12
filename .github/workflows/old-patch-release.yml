@@ -1,0 +1,195 @@
+name: Older Patch and Release APK
+
+on:
+  workflow_dispatch:
+    inputs:
+      no-release:
+        description: "Don't release"
+        type: boolean
+        default: false
+env:
+  patched_apk_filename: patched-snapchat.apk
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Set up Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Set JAVA_HOME
+        run: echo "JAVA_HOME=$(echo ${{ steps.setup-java.outputs.java-home }})" >> $GITHUB_ENV
+  
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # required for github-action-get-previous-tag
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq curl
+        shell: bash
+
+      - name: Install unzip
+        run: sudo apt-get install unzip -y
+
+      - name: Install pup
+        run: |
+         wget https://github.com/ericchiang/pup/releases/download/v0.4.0/pup_v0.4.0_linux_amd64.zip -O pup.zip
+         unzip pup.zip
+         chmod +x pup
+         sudo mv pup /usr/local/bin/
+        working-directory: .
+
+      - name: Grant execute permissions to script
+        run: chmod +x script.sh
+        working-directory: .
+
+      - name: Run APK Download Script
+        run: |
+         ./script.sh  
+
+      - name: Determine Snapchat Filename
+        run: |
+          snapchatapkname=$(ls snapchatapk/*chat*)
+          echo "snapchat_apk_filename=$snapchatapkname" >> $GITHUB_ENV
+
+      - name: REGEX Snapchat Version
+        id: REGEX_snapchat_version
+        uses: 'frabert/replace-string-action@v2.5'
+        with:
+          pattern: 'snapchatapk/snap.*?(\d+)-(\d+)-(\d+)-(\d+)\.apk'
+          string: ${{ env.snapchat_apk_filename }}
+          replace-with: 'v$1.$2.$3.$4'
+
+      - name: REGEX Snapchat Name
+        id: REGEX_snapchat_name
+        uses: 'frabert/replace-string-action@v2.5'
+        with:
+          pattern: 'snapchatapk/(snap.*?)\.apk'
+          string: ${{ env.snapchat_apk_filename }}
+          replace-with: '$1'
+
+      - name: Fetch latest release information
+        id: fetch-release
+        run: |
+          repo_owner="rhunk"
+          repo_name="SnapEnhance"
+          api_url="https://api.github.com/repos/${repo_owner}/${repo_name}/releases/latest"
+          release_info=$(curl -s "$api_url")
+          release_id=$(echo $release_info | jq -r '.id')
+          release_tag_name=$(echo $release_info | jq -r '.tag_name')
+
+          # Find the asset URL for APK files
+          for asset in $(echo $release_info | jq -c '.assets[]'); do
+            asset_name=$(echo $asset | jq -r '.name')
+            if [[ $asset_name == *"all"* && $asset_name == *".apk" ]]; then
+              asset_url=$(echo $asset | jq -r '.browser_download_url')
+              break
+            fi
+          done
+
+          echo "snapenhance_release_id=$release_id" >> $GITHUB_ENV
+          echo "snapenhance_release_tag_name=$release_tag_name" >> $GITHUB_ENV
+          echo "snapenhance_asset_url=$asset_url" >> $GITHUB_ENV
+          echo "snapenhance_apk_filename=snapenhance-$release_tag_name.apk" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Download the latest SnapEnhance APK
+        run: |
+          wget "${{ env.snapenhance_asset_url }}" -O "$GITHUB_WORKSPACE/${{ env.snapenhance_apk_filename }}"
+        shell: bash
+
+      - name: Run the command
+        run: |
+          java -jar lspatch.jar -m ${{ env.snapenhance_apk_filename }} -f -l 2 -v ${{ env.snapchat_apk_filename }}
+
+      - name: Rename patched apk
+        run: |
+          mv ./${{ steps.REGEX_snapchat_name.outputs.replaced }}-402-lspatched.apk ./${{ env.patched_apk_filename }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.patched_apk_filename }}
+          path: ./${{ env.patched_apk_filename }}
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.REGEX_snapchat_name.outputs.replaced }}.apk
+          path: ./${{ env.snapchat_apk_filename }}
+
+      - name: Get previous tag
+        id: previoustag
+        uses: 'WyriHaximus/github-action-get-previous-tag@v1.4.0'
+        with:
+          fallback: 'v1.0.0.0'
+
+      - name: REGEX last version for 1st-3rd part
+        id: REGEX_1st-3rd_part
+        uses: 'frabert/replace-string-action@v2.5'
+        with:
+          pattern: 'v(\d+)\.(\d+)\.(\d+)\.(\d+)'
+          string: ${{ steps.previoustag.outputs.tag }}
+          replace-with: 'v$1.$2.$3'
+
+      - name: REGEX last version for 4th part
+        id: REGEX_4th_part
+        uses: 'frabert/replace-string-action@v2.5'
+        with:
+          pattern: 'v(\d+)\.(\d+)\.(\d+)\.(\d+)'
+          string: ${{ steps.previoustag.outputs.tag }}
+          replace-with: '$4'
+
+      - name: Up the version if same SnapEnhance version
+        id: semver
+        if: ${{ env.snapenhance_release_tag_name == steps.REGEX_1st-3rd_part.outputs.replaced }}
+        uses: 'WyriHaximus/github-action-next-release-version@v1'
+        with:
+          version: ${{ steps.REGEX_4th_part.outputs.replaced }}
+
+      - name: Define Release Version if same SnapEnhance version
+        if: ${{ env.snapenhance_release_tag_name == steps.REGEX_1st-3rd_part.outputs.replaced }}
+        run: |
+          echo "RELEASE_VERSION=${{ steps.REGEX_1st-3rd_part.outputs.replaced }}.${{ steps.semver.outputs.version }}" >> $GITHUB_ENV
+
+      - name: Define Release Version if different SnapEnhance version
+        if: ${{ env.snapenhance_release_tag_name != steps.REGEX_1st-3rd_part.outputs.replaced }}
+        run: |
+          echo "RELEASE_VERSION=${{ env.snapenhance_release_tag_name }}.0" >> $GITHUB_ENV
+
+      - name: Create and Publish Release
+        id: create-publish-release
+        if: ${{ inputs.no-release != true }}
+        uses: softprops/action-gh-release@v2.0.4
+        with:
+          tag_name: ${{ env.RELEASE_VERSION }}
+          name: SnapEnhance Patched APK ${{ env.RELEASE_VERSION }}
+          fail_on_unmatched_files: true
+          files: |
+            ${{ env.patched_apk_filename }}
+            ${{ env.snapenhance_apk_filename }}
+          body: |
+            <h2>Version Information:</h2>
+            
+            Snapchat Version: `${{ steps.REGEX_snapchat_version.outputs.replaced }}`
+            SnapEnhance Version: `${{ env.snapenhance_release_tag_name }}`
+            <br>
+            <h3>Instructions:</h3>
+            
+            If you want to use SnapEnhance Snapchat on Android without root, then you need to download `${{ env.patched_apk_filename }}` and `${{ env.snapenhance_apk_filename }}` and install them.
+            
+            Automate your updates with [Obtainium](https://github.com/NicholasFlamy/snapenhance-no-root-patch#obtainium-instructions).
