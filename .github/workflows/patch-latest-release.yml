@@ -1,6 +1,7 @@
 name: Patch and Release APK
 
 on:
+  push:
   schedule:
     - cron: '55 23 * * 0,4'
   workflow_dispatch:
