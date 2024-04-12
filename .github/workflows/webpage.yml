@@ -27,7 +27,7 @@ jobs:
   # Single deploy job since we're just deploying
   deploy:
     environment:
-      name: "Obtainium Page"
+      name: "Webpage"
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
