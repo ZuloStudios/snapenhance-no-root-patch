@@ -8,7 +8,9 @@ on:
         type: boolean
         default: false
 env:
-  patched_apk_filename: patched-snapchat.apk
+  patched_universal_apk_filename: patched-universal-snapchat.apk
+  patched_arm64-v8a_apk_filename: patched-arm64-v8a-snapchat.apk
+  patched_armeabi-v7a_apk_filename: patched-armeabi-v7a-snapchat.apk
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
@@ -97,35 +99,59 @@ jobs:
           for asset in $(echo $release_info | jq -c '.assets[]'); do
             asset_name=$(echo $asset | jq -r '.name')
             if [[ $asset_name == *"all"* && $asset_name == *".apk" ]]; then
-              asset_url=$(echo $asset | jq -r '.browser_download_url')
+              universal_asset_url=$(echo $asset | jq -r '.browser_download_url')
               break
             fi
           done
 
           echo "snapenhance_release_id=$release_id" >> $GITHUB_ENV
           echo "snapenhance_release_tag_name=$release_tag_name" >> $GITHUB_ENV
-          echo "snapenhance_asset_url=$asset_url" >> $GITHUB_ENV
-          echo "snapenhance_apk_filename=snapenhance-$release_tag_name.apk" >> $GITHUB_ENV
+          echo "snapenhance_universal_asset_url=$universal_asset_url" >> $GITHUB_ENV
+          echo "snapenhance_arm64-v8a_asset_url=$arm64-v8a_asset_url" >> $GITHUB_ENV
+          echo "snapenhance_armeabi-v7a_asset_url=$armeabi-v7a_asset_url" >> $GITHUB_ENV
+          echo "snapenhance_universal_apk_filename=snapenhance-universal-$release_tag_name.apk" >> $GITHUB_ENV
+          echo "snapenhance_arm64-v8a_apk_filename=snapenhance-arm64-v8a-$release_tag_name.apk" >> $GITHUB_ENV
+          echo "snapenhance_armeabi-v7a_apk_filename=snapenhance-armeabi-v7a-$release_tag_name.apk" >> $GITHUB_ENV
         shell: bash
 
-      - name: Download the latest SnapEnhance APK
+      - name: Download Universal SnapEnhance APK
         run: |
-          wget "${{ env.snapenhance_asset_url }}" -O "$GITHUB_WORKSPACE/${{ env.snapenhance_apk_filename }}"
+          wget "${{ env.snapenhance_asset_url }}" -O "$GITHUB_WORKSPACE/${{ env.snapenhance_universal_apk_filename }}"
         shell: bash
 
-      - name: Run the command
+      - name: Download arm64-v8a SnapEnhance APK
         run: |
-          java -jar lspatch.jar -m ${{ env.snapenhance_apk_filename }} -f -l 2 -v ${{ env.snapchat_apk_filename }}
+          wget "${{ env.snapenhance_asset_url }}" -O "$GITHUB_WORKSPACE/${{ env.snapenhance_arm64-v8a_apk_filename }}"
+        shell: bash
 
-      - name: Rename patched apk
+      - name: Download armeabi-v7a SnapEnhance APK
         run: |
-          mv ./${{ steps.REGEX_snapchat_name.outputs.replaced }}-402-lspatched.apk ./${{ env.patched_apk_filename }}
+          wget "${{ env.snapenhance_asset_url }}" -O "$GITHUB_WORKSPACE/${{ env.snapenhance_armeabi-v7a_apk_filename }}"
+        shell: bash
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ env.patched_apk_filename }}
-          path: ./${{ env.patched_apk_filename }}
+      - name: Patch Snapchat with Universal SnapEnhance APK
+        run: |
+          java -jar lspatch.jar -m ${{ env.snapenhance_universal_apk_filename }} -f -l 2 -v ${{ env.snapchat_apk_filename }}
+
+      - name: Rename universal patched APK
+        run: |
+          mv ./${{ steps.REGEX_snapchat_name.outputs.replaced }}-402-lspatched.apk ./${{ env.patched_universal_apk_filename }}
+
+      - name: Patch Snapchat with arm64-v8a SnapEnhance APK
+        run: |
+          java -jar lspatch.jar -m ${{ env.snapenhance_arm64-v8a_apk_filename }} -f -l 2 -v ${{ env.snapchat_apk_filename }}
+
+      - name: Rename arm64-v8a patched APK
+        run: |
+          mv ./${{ steps.REGEX_snapchat_name.outputs.replaced }}-402-lspatched.apk ./${{ env.patched_arm64-v8a_apk_filename }}
+
+      - name: Patch Snapchat with armeabi-v7a SnapEnhance APK
+        run: |
+          java -jar lspatch.jar -m ${{ env.snapenhance_armeabi-v7a_apk_filename }} -f -l 2 -v ${{ env.snapchat_apk_filename }}
+
+      - name: Rename armeabi-v7a patched APK
+        run: |
+          mv ./${{ steps.REGEX_snapchat_name.outputs.replaced }}-402-lspatched.apk ./${{ env.patched_armeabi-v7a_apk_filename }}
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -181,8 +207,12 @@ jobs:
           name: SnapEnhance Patched APK ${{ env.RELEASE_VERSION }}
           fail_on_unmatched_files: true
           files: |
-            ${{ env.patched_apk_filename }}
-            ${{ env.snapenhance_apk_filename }}
+            ${{ env.patched_arm64-v8a_apk_filename }}
+            ${{ env.patched_armeabi-v7a_apk_filename }}
+            ${{ env.patched_universal_apk_filename }}
+            ${{ env.snapenhance_arm64-v8a_apk_filename }}
+            ${{ env.snapenhance_armeabi-v7a_apk_filename }}
+            ${{ env.snapenhance_universal_apk_filename }}
           body: |
             <h2>Version Information:</h2>
             
