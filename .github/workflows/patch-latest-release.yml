@@ -95,11 +95,18 @@ jobs:
           release_tag_name=$(echo $release_info | jq -r '.tag_name')
 
           # Find the asset URL for APK files
-          asset_url=""
           for asset in $(echo $release_info | jq -c '.assets[]'); do
             asset_name=$(echo $asset | jq -r '.name')
             if [[ $asset_name == *"all"* && $asset_name == *".apk" ]]; then
               universal_asset_url=$(echo $asset | jq -r '.browser_download_url')
+              break
+            fi
+            if [[ $asset_name == *"armv8"* && $asset_name == *".apk" ]]; then
+              arm64-v8a_asset_url=$(echo $asset | jq -r '.browser_download_url')
+              break
+            fi
+            if [[ $asset_name == *"armv7"* && $asset_name == *".apk" ]]; then
+              armeabi-v7a_asset_url=$(echo $asset | jq -r '.browser_download_url')
               break
             fi
           done
