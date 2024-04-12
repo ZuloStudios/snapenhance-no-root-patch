@@ -27,7 +27,7 @@ jobs:
   # Single deploy job since we're just deploying
   deploy:
     environment:
-      name: github-pages
+      name: "Obtainium Page"
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
@@ -39,7 +39,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload the following
-          path: "obtainium/"
+          path: "./obtainium/LINKS.html"
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
