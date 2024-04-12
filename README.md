@@ -6,12 +6,17 @@
 The Workflow runs at 23:55 UTC (6:55 PM EST or 7:55 PM EDT, Eastern Daylight Savings Time) only on Sunday and Thursday. (Subject to change, mainly when I'm testing.)
 
 # SnapEnhance LSPatch Generator
-SnapEnhance is an Xposed mod that enhances your Snapchat experience.<br/><br/> This is Un-Offical repo to build the LSPatch Version.
-</div>
+SnapEnhance is an Xposed mod that enhances your Snapchat experience.
 
-### SnapEnhanceModGen
+This ***unofficial*** repository uses a GitHub Actions workflow for generating a Snapchat APK by using the [SnapEnhance Module](https://github.com/rhunk/SnapEnhance) and creating a public release.
 
-This repository contains a GitHub Actions workflow for generating a Snapchat APK by using the [SnapEnhance Module](https://github.com/rhunk/SnapEnhance) and creating a public release.
+Credit to @hamzaharoon1314 and @ABCPascal for much of the work.
+
+### @NicholasFlamy Work:
+- Fully automated this repository
+- Display Snapchat & SnapEnhance version
+- New release created for every workflow run
+- Release version follows SnapEnhance
 
 <br>
 
@@ -22,17 +27,17 @@ The instructions are on every release, download the `patched-snapchat.apk` file 
 <br>
 
 # Obtainium Instructions
-COMING SOON (not ™ as I will post Obtainium comfig for this once I get it working, I personally use Obtainium)
+COMING SOON (not ™ as I will post Obtainium config for this once I get it working, I personally use Obtainium)
 
 <br>
 
 ## SnapEnhance and Snapchat Update Instructions
 
 ### SnapEnhance Update
-1. Clear/Regenerate Mapping File after update.
+1. Clear/Regenerate Mapping File after update?
 
 ### Snapchat Update
-1. Clear/Regenerate Mapping File after update.
+1. Clear/Regenerate Mapping File after update?
 
 <br>
 
