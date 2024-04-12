@@ -1,11 +1,12 @@
 <div align="center">
-  <img src="https://github.com/hamzaharoon1314/SnapEnhanceModGen/blob/9aba3263a34893c91a08d86183baf708bbbbea9c/REDME_IMG/LOGO.png" height="250" />
+  <img src="https://github.com/hamzaharoon1314/SnapEnhanceModGen/blob/9aba3263a34893c91a08d86183baf708bbbbea9c/REDME_IMG/LOGO.png" height="250">
+</div>
 
 ### [Instuctions](#instructions) Below (Including [Obtainium Instructions](#obtainium-instructions))
 
 The Workflow runs at 23:55 UTC (6:55 PM EST or 7:55 PM EDT, Eastern Daylight Savings Time) only on Sunday and Thursday. (Subject to change, mainly when I'm testing.)
 
-# SnapEnhance LSPatch Generator
+# SnapEnhance LSPatch
 SnapEnhance is an Xposed mod that enhances your Snapchat experience.
 
 This ***unofficial*** repository uses a GitHub Actions workflow for generating a Snapchat APK by using the [SnapEnhance Module](https://github.com/rhunk/SnapEnhance) and creating a public release.
