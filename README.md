@@ -30,7 +30,11 @@ The instructions are on every [release](https://github.com/NicholasFlamy/snapenh
 <br>
 
 # Obtainium Instructions
-COMING SOON (not ™ as I will post Obtainium config for this once I get it working, I personally use Obtainium)
+
+Follow instructions here:
+[Obtainium Configuration Links Webpage](https://nicholasflamy.github.io/snapenhance-no-root-patch/obtainium/links.html)
+
+- (Click the apps and hit Continue within Obtainium.)
 
 <br>
 
