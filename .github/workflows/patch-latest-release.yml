@@ -240,7 +240,7 @@ jobs:
             
             Snapchat Version: `${{ steps.REGEX_snapchat_version.outputs.replaced }}`
             SnapEnhance Version: `${{ env.snapenhance_release_tag_name }}`
-            <br>
+            
             <h3>Instructions:</h3>
             
             If you want to use SnapEnhance Snapchat on Android without root, then you need to download amd install the patched Snapchat APK and the SnapEnhance APK for your architecture, if you don't know your architecture, [learn how to find your architecture](https://github.com/NicholasFlamy/snapenhance-no-root-patch/blob/master/LEARNFINDARCH.md) or download `${{ env.patched_universal_apk_filename }}` and `${{ env.snapenhance_universal_apk_filename }}`.
