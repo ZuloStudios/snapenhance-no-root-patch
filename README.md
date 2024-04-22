@@ -64,7 +64,7 @@ This GitHub Actions workflow automates the creation of a Snapchat Patch for Non-
 
 ## How to report issues
 
-Do not report issues of these prebuilts in the official [SnapEnhance Telegram](https://t.me/snapenhance_chat). If you want me to help (@NicholasFlamy) then you need to open an issue on this repo. 
+Do not report issues of these prebuilts in the official [SnapEnhance Telegram](https://t.me/snapenhance_chat). If you want me to help ([@NicholasFlamy](https://github.com/NicholasFlamy)) then you need to open an issue on this repo. 
 
 You could also make a post about it on [r/SnapEnhanceApp](https://reddit.com/r/SnapEnhanceApp) using the "Prebuilt Issue" post flair or make a post about it on the [SnapEnhance Lemmy Community](https://lemmy.world/c/snapenhance) mentioning that it's a prebuilt.
 
