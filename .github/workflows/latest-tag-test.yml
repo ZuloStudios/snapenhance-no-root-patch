@@ -15,8 +15,23 @@ jobs:
         with:
           fetch-depth: 0 # required for github-action-get-previous-tag
 
-      - name: Get previous tag
-        id: previoustag
-        uses: 'WyriHaximus/github-action-get-previous-tag@v1.4.0'
+      # Step 1: request upstream releases from github api using fjogeleit/http-request-action
+      - name: Obtain latest upstream release tag
+      # don't omit the step ID, it's used later to access the api response
+        id: upstream_releases
+        uses: fjogeleit/http-request-action@v1
         with:
-          fallback: 'v1.0.0.0'
+          url: "https://api.github.com/repos/brave/brave-browser/releases/latest"
+          method: 'GET'
+      # Step 2: since the branch name is different than the latest release tag the REGEX will select the correct branch
+      - name: REGEX the release tag
+        id: REGEX_tag
+        uses: frabert/replace-string-action@v2
+        with:
+          pattern: 'v((\d+)\.(\d+)\.)(\d+)'
+          string: ${{ fromJson(steps.upstream_releases.outputs.response).tag_name }}
+          replace-with: '$1x'
+
+      - name: Echo release name
+        run: |
+          echo ${{ steps.REGEX_tag.outputs.replaced }}
