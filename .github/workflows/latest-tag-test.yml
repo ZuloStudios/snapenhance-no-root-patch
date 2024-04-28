@@ -25,7 +25,7 @@ jobs:
           method: 'GET'
       # Step 2: since the branch name is different than the latest release tag the REGEX will select the correct branch
       - name: REGEX the release tag
-        id: REGEX_tag
+        id: previoustag
         uses: frabert/replace-string-action@v2
         with:
           pattern: '(v(\d+)\.(\d+)\.(\d+)\.(\d+))'
@@ -34,4 +34,4 @@ jobs:
 
       - name: Echo release name
         run: |
-          echo ${{ steps.REGEX_tag.outputs.replaced }}
+          echo ${{ steps.previoustag.outputs.replaced }}
