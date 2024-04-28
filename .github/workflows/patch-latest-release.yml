@@ -181,18 +181,20 @@ jobs:
           name: ${{ steps.REGEX_snapchat_name.outputs.replaced }}.apk
           path: ./${{ env.snapchat_apk_filename }}
 
-      - name: Get previous tag
+      - name: Obtain latest upstream release tag
+      # don't omit the step ID, it's used later to access the api response
         id: previoustag
-        uses: 'WyriHaximus/github-action-get-previous-tag@v1.4.0'
+        uses: fjogeleit/http-request-action@v1
         with:
-          fallback: 'v1.0.0.0'
+          url: "https://api.github.com/repos/NicholasFlamy/snapenhance-no-root-patch/releases/latest"
+          method: 'GET'
 
       - name: REGEX last version for 1st-3rd part
         id: REGEX_1st-3rd_part
         uses: 'frabert/replace-string-action@v2.5'
         with:
           pattern: 'v(\d+)\.(\d+)\.(\d+)\.(\d+)'
-          string: ${{ steps.previoustag.outputs.tag }}
+          string: ${{ fromJson(steps.previoustag.outputs.response).tag_name }}
           replace-with: 'v$1.$2.$3'
 
       - name: REGEX last version for 4th part
@@ -200,7 +202,7 @@ jobs:
         uses: 'frabert/replace-string-action@v2.5'
         with:
           pattern: 'v(\d+)\.(\d+)\.(\d+)\.(\d+)'
-          string: ${{ steps.previoustag.outputs.tag }}
+          string: ${{ fromJson(steps.previoustag.outputs.response).tag_name }}
           replace-with: '$4'
 
       - name: Up the version if same SnapEnhance version
