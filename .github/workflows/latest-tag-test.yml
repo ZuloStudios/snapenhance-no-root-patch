@@ -21,16 +21,16 @@ jobs:
         id: upstream_releases
         uses: fjogeleit/http-request-action@v1
         with:
-          url: "https://api.github.com/repos/brave/brave-browser/releases/latest"
+          url: "https://api.github.com/repos/NicholasFlamy/snapenhance-no-root-patch/releases/latest"
           method: 'GET'
       # Step 2: since the branch name is different than the latest release tag the REGEX will select the correct branch
       - name: REGEX the release tag
         id: REGEX_tag
         uses: frabert/replace-string-action@v2
         with:
-          pattern: 'v((\d+)\.(\d+)\.)(\d+)'
+          pattern: '(v(\d+)\.(\d+)\.(\d+)\.(\d+))'
           string: ${{ fromJson(steps.upstream_releases.outputs.response).tag_name }}
-          replace-with: '$1x'
+          replace-with: '$1'
 
       - name: Echo release name
         run: |
