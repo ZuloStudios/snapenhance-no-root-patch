@@ -32,17 +32,17 @@ for version in "${versions[@]}"; do
 
             [ "${#url1[@]}" -eq 0 ] && continue
         fi
-        echo 33
+        echo "1/3 url1: $url1"
 
         url2=$(curl -sL -A "$UserAgent" "https://www.apkmirror.com${url1[-1]}" | pup -p --charset utf-8 'a:contains("Download APK") attr{href}')
 
         [ "$url2" == "" ] && continue
-        echo 66
+        echo "2/3 url2: $url2"
 
         url3=$(curl -sL -A "$UserAgent" "https://www.apkmirror.com$url2" | pup -p --charset UTF-8 'a[data-google-vignette="false"][rel="nofollow"] attr{href}')
 
         [ "$url3" == "" ] && continue
-        echo 100
+        echo "3/3 url3: $url3"
 
         echo "https://www.apkmirror.com$url3" >&2
         echo "Downloading APK from: https://www.apkmirror.com$url3"
