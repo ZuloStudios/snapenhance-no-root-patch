@@ -19,6 +19,7 @@ Credit to [@hamzaharoon1314](https://github.com/hamzaharoon1314) and [@ABCPascal
 - New release created for every workflow run
 - Release version follows SnapEnhance
 - Multiple Architectures in Releases
+- Fix Snapchat APK download script (Aug 2024)
 - More...
 
 <br>
