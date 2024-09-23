@@ -94,7 +94,7 @@ jobs:
           repo_owner="rhunk"
           repo_name="SnapEnhance"
           api_url="https://api.github.com/repos/${repo_owner}/${repo_name}/releases/latest"
-          release_info=$(curl -s "$api_url")
+          release_info=$(curl "$api_url")
           release_id=$(echo $release_info | jq -r '.id')
           release_tag_name=$(echo $release_info | jq -r '.tag_name')
 
