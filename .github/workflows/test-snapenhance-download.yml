@@ -1,0 +1,108 @@
+name: Test SnapEnhance Download
+
+on:
+  workflow_dispatch:
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Set JAVA_HOME
+        run: echo "JAVA_HOME=$(echo ${{ steps.setup-java.outputs.java-home }})" >> $GITHUB_ENV
+  
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # required for github-action-get-previous-tag
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq curl
+        shell: bash
+
+      - name: Install unzip
+        run: sudo apt-get install unzip -y
+
+      - name: Install pup
+        run: |
+         wget https://github.com/ericchiang/pup/releases/download/v0.4.0/pup_v0.4.0_linux_amd64.zip -O pup.zip
+         unzip pup.zip
+         chmod +x pup
+         sudo mv pup /usr/local/bin/
+        working-directory: .
+
+      - name: Fetch latest SnapEnhance info and Name the APK files
+        id: fetch-release
+        run: |
+          repo_owner="rhunk"
+          repo_name="SnapEnhance"
+          api_url="https://api.github.com/repos/${repo_owner}/${repo_name}/releases/latest"
+          release_info=$(curl -s "$api_url")
+          release_id=$(echo $release_info | jq -r '.id')
+          release_tag_name=$(echo $release_info | jq -r '.tag_name')
+
+          # Find the asset URL for APK files
+          for asset in $(echo $release_info | jq -c '.assets[]'); do
+            asset_name=$(echo $asset | jq -r '.name')
+            if [[ $asset_name == *"all"* && $asset_name == *".apk" ]]; then
+              universal_asset_url=$(echo $asset | jq -r '.browser_download_url')
+              break
+            fi
+          done
+          
+          for asset in $(echo $release_info | jq -c '.assets[]'); do
+            asset_name=$(echo $asset | jq -r '.name')
+            if [[ $asset_name == *"armv8"* && $asset_name == *".apk" ]]; then
+              arm64_v8a_asset_url=$(echo $asset | jq -r '.browser_download_url')
+              break
+            fi
+          done
+          
+          for asset in $(echo $release_info | jq -c '.assets[]'); do
+            asset_name=$(echo $asset | jq -r '.name')
+            if [[ $asset_name == *"armv7"* && $asset_name == *".apk" ]]; then
+              armeabi_v7a_asset_url=$(echo $asset | jq -r '.browser_download_url')
+              break
+            fi
+          done
+
+          echo "snapenhance_release_id=$release_id" >> $GITHUB_ENV
+          echo "snapenhance_release_tag_name=$release_tag_name" >> $GITHUB_ENV
+          echo "snapenhance_universal_asset_url=$universal_asset_url" >> $GITHUB_ENV
+          echo "snapenhance_arm64-v8a_asset_url=$arm64_v8a_asset_url" >> $GITHUB_ENV
+          echo "snapenhance_armeabi-v7a_asset_url=$armeabi_v7a_asset_url" >> $GITHUB_ENV
+          echo "snapenhance_universal_apk_filename=snapenhance-universal-$release_tag_name.apk" >> $GITHUB_ENV
+          echo "snapenhance_arm64-v8a_apk_filename=snapenhance-arm64-v8a-$release_tag_name.apk" >> $GITHUB_ENV
+          echo "snapenhance_armeabi-v7a_apk_filename=snapenhance-armeabi-v7a-$release_tag_name.apk" >> $GITHUB_ENV
+          echo "patched_universal_apk_filename=patched-snapchat-universal-${{ steps.REGEX_snapchat_version.outputs.replaced }}.apk" >> $GITHUB_ENV
+          echo "patched_arm64-v8a_apk_filename=patched-snapchat-arm64-v8a-${{ steps.REGEX_snapchat_version.outputs.replaced }}.apk" >> $GITHUB_ENV
+          echo "patched_armeabi-v7a_apk_filename=patched-snapchat-armeabi-v7a-${{ steps.REGEX_snapchat_version.outputs.replaced }}.apk" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Download Universal SnapEnhance APK
+        run: |
+          wget "${{ env.snapenhance_universal_asset_url }}" -O "$GITHUB_WORKSPACE/${{ env.snapenhance_universal_apk_filename }}"
+        shell: bash
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.REGEX_snapchat_name.outputs.replaced }}.apk
+          path: ./${{ env.snapchat_apk_filename }}
