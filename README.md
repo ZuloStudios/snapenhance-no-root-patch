@@ -2,12 +2,6 @@
   <img src="https://github.com/hamzaharoon1314/SnapEnhanceModGen/blob/9aba3263a34893c91a08d86183baf708bbbbea9c/REDME_IMG/LOGO.png" height="250">
 </div>
 
-# Disabled Autobuilds
-
-### I am disabling them because at the moment Snapchat is banning accounts for using the latest build, SnapEnhance recommends this version of Snapchat if you want to take the risk and continue using Snapenhance: [v12.81.0.44](https://github.com/NicholasFlamy/snapenhance-no-root-patch/releases/tag/v2.0.1.0)
-
-<br><br><br>
-
 ### [Instuctions](#instructions) Below (Including [Obtainium Instructions](#obtainium-instructions))
 
 The Workflow runs at 23:55 UTC (6:55 PM EST or 7:55 PM EDT, Eastern Daylight Savings Time) only on Thursday. (Subject to change, mainly when I'm testing.)
